@@ -1,5 +1,7 @@
 name: GitHub Actions Demo
 on: [push]
+env:
+  ENVIRONMENT: ${{ (github.event_name == 'pull_request' && 'dev') || (contains(github.ref, 'develop') && 'qa') || (contains(github.ref, 'release') && 'stage') || (contains(github.ref, 'main') && 'prod') }}
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -15,3 +17,4 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: echo "Environment is ${{ env.ENVIRONMENT }}"
